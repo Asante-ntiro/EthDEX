@@ -1,0 +1,73 @@
+-- Import the required Plutus libraries
+import qualified Plutus.Trace as Trace
+import qualified Data.List as List
+import qualified Data.Map as Map
+import qualified Data.Maybe as Maybe
+import qualified Ledger.Interval as Interval
+import qualified Ledger.Value as Value
+
+-- Import the SafeMath library
+import qualified Ledger.Typed.Scripts.SafeMath as SafeMath
+
+-- The DEX contract type
+data DEX = DEX
+  { -- The address of the contract owner
+    owner :: Address
+    -- A map of all the tokens available for trading on the DEX,
+    -- keyed by their symbol
+  , tokens :: Map String Token
+    -- A list of all the open orders on the DEX
+  , orders :: [Order]
+  }
+
+-- The Token contract type
+data Token = Token
+  { -- The token symbol
+    symbol :: String
+    -- The token's number of decimal places
+  , decimals :: Integer
+  }
+
+-- The Order contract type
+data Order = Order
+  { -- The address of the user who created the order
+    owner :: Address
+    -- The token being traded in the order
+  , token :: Token
+    -- The amount of the token being traded in the order
+  , amount :: Integer
+    -- The price of the token being traded in the order
+  , price :: Integer
+    -- Whether the order is a sell order or a buy order
+  , isSell :: Bool
+  }
+
+-- The DEX contract
+dex :: DEX
+dex = DEX
+  { owner = owner
+  , tokens = tokens
+  , orders = orders
+  }
+  where
+    -- The contract owner is the address that deploys the contract
+    owner = caller
+    -- Initially, the DEX has no tokens or orders
+    tokens = Map.empty
+    orders = []
+
+-- The addToken function allows the owner to add a new token to the DEX
+addToken :: String -> Integer -> (DEX -> DEX)
+addToken symbol decimals = \dex ->
+  -- Check if the token with the given symbol already exists on the DEX
+  if Maybe.isJust $ Map.lookup symbol $ tokens dex
+  then
+    -- If the token already exists, throw an error
+    error "Token with symbol already exists"
+  else
+    -- Otherwise, create a new Token and add it to the DEX's list of tokens
+    dex { tokens = Map.insert symbol Token { symbol = symbol, decimals = decimals } $ tokens dex }
+
+-- The getTokenBySymbol function allows users to look up a token by its symbol
+getTokenBySymbol :: String -> Maybe Token
+
