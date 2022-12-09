@@ -10,3 +10,7 @@ Single point of failure: Centralized exchanges are vulnerable to failures or out
 Inability to access assets: Some centralized exchanges have been known to freeze or seize users' assets for various reasons, such as regulatory compliance or internal policy. This can be frustrating for users who may not be able to access their assets when they need them. DEXs, on the other hand, allow users to retain control of their assets and access them at any time.
 
 Limited trading options: Centralized exchanges often have limited trading options, such as a limited selection of tradable assets or restrictive trading rules. DEXs, on the other hand, are typically more flexible and allow users to trade a wider variety of assets and use more advanced trading strategies.
+
+
+
+Asante Ntiro
